@@ -19,19 +19,39 @@ body {
     max-width: 600px;
 }
 
-h1 {
+#heading {
     color: white;
     text-align: center;
     font-weight: normal;
     text-transform: uppercase;
-    line-height: 1.1;
-    background: steelblue;
+    line-height: 1.1;   
+    background: forestgreen;
     margin: 0;
     padding: 20px 0;
 }
 
+#heading h1 {
+    margin: 0;
+    font-size: 3em;
+}
+
+#scoreBoard {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.score {
+    font-weight: lighter;
+    font-size: 0.8em;
+}
+
 #colourDisplay {
-    font-size: 200%;
+    font-size: 250%;
+}
+
+#savedDate {
+    font-weight: normal;
+    font-size: 0.7em;
 }
 
 #message {
@@ -43,11 +63,12 @@ h1 {
     background: white;
     height: 30px;
     text-align: center;
+    min-width: 350px;
 }
 
 .selected {
     color: white;
-    background: steelblue;
+    background: forestgreen;
 }
 
 button {
@@ -55,7 +76,7 @@ button {
     background: none;
     text-transform: uppercase;
     height: 100%;
-    color: steelblue;
+    color: forestgreen;
     font-weight: 700;
     letter-spacing: 1px;
     font-size: inherit;
@@ -63,7 +84,16 @@ button {
     outline: none;
 }
 
+button#score {
+    color: white;
+}
+
+button#score:hover {
+    color: forestgreen;
+    background: white;
+}
+
 button:hover {
     color: white;
-    background: steelblue;
+    background: forestgreen;
 }
