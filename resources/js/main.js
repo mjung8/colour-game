@@ -10,12 +10,14 @@ var modeButtons = document.querySelectorAll(".mode");
 var saveGame = {
     easy: 0,
     hard: 0,
-    date: new Date()
+    date: new Date(),
+    hardClicks: 0
 };
 var savedDateDisplay = document.querySelector("#savedDate");
 var scoreEasyDisplay = document.querySelector("#easy");
 var scoreHardDisplay = document.querySelector("#hard");
 var gameOver = false;
+var clickCounter = 0;
 
 window.addEventListener("load", function () {
     init();
@@ -49,6 +51,7 @@ window.addEventListener("load", function () {
                 // compare colour to pickedColour
                 if (!gameOver) {
                     if (clickedColour === pickedColour) {
+                        clickCounter++;
                         messageDisplay.textContent = "Correct!";
                         saveScore();
                         resetButton.textContent = "Play Again?";
@@ -58,6 +61,8 @@ window.addEventListener("load", function () {
                     } else {
                         this.style.background = "#232323";
                         messageDisplay.textContent = "Try Again";
+                        clickCounter++;
+                        console.log(clickCounter);
                     }
                 }
             });
@@ -65,6 +70,7 @@ window.addEventListener("load", function () {
     }
 
     function reset() {
+        clickCounter = 0;
         gameOver = false;
         // generate all new colours
         colours = generateRandomColours(numSquares);
@@ -141,6 +147,9 @@ window.addEventListener("load", function () {
             if (saveGame.hard == undefined || saveGame.hard == null) {
                 saveGame.hard == 0;
             }
+            if (saveGame.hardClicks == undefined || saveGame.hardClicks == null) {
+                saveGame.hardClicks == 0;
+            }
             saveGame.date = new Date(saveGame.date);
             updateScoreDisplay();
         }
@@ -150,8 +159,11 @@ window.addEventListener("load", function () {
         if (numSquares === 3) {
             saveGame.easy++;
         } else if (numSquares === 6) {
+            var temp = saveGame.hard * saveGame.hardClicks;
             saveGame.hard++;
+            saveGame.hardClicks += clickCounter;
         }
+        console.log(clickCounter);
         saveGame.date = new Date();
         localStorage.saveGame = JSON.stringify(saveGame);
         updateScoreDisplay();
@@ -159,7 +171,8 @@ window.addEventListener("load", function () {
 
     function updateScoreDisplay() {
         scoreEasyDisplay.textContent = "Easy " + saveGame.easy;
-        scoreHardDisplay.textContent = "Hard " + saveGame.hard;
+        var c = saveGame.hardClicks  / saveGame.hard;
+        scoreHardDisplay.textContent = "Hard " + saveGame.hard + " (avg clicks: " + c.toFixed(2) + ")";
         var s = saveGame.date.toDateString() + " " + saveGame.date.toLocaleTimeString();
         savedDateDisplay.textContent = "Last Saved " + s;
     }
