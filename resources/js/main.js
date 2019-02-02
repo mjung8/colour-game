@@ -7,6 +7,7 @@ var messageDisplay = document.querySelector("#message");
 var heading = document.querySelector("#heading");
 var resetButton = document.querySelector("#reset");
 var modeButtons = document.querySelectorAll(".mode");
+var scoreButton = document.querySelector("#score");
 var saveGame = {
     easy: 0,
     hard: 0,
@@ -27,6 +28,7 @@ window.addEventListener("load", function () {
         setupSquares();
         reset();
         checkStorage();
+        setupScoreButton();
     }
 
     function setupModeButtons() {
@@ -62,7 +64,6 @@ window.addEventListener("load", function () {
                         this.style.background = "#232323";
                         messageDisplay.textContent = "Try Again";
                         clickCounter++;
-                        console.log(clickCounter);
                     }
                 }
             });
@@ -163,17 +164,30 @@ window.addEventListener("load", function () {
             saveGame.hard++;
             saveGame.hardClicks += clickCounter;
         }
-        console.log(clickCounter);
         saveGame.date = new Date();
         localStorage.saveGame = JSON.stringify(saveGame);
         updateScoreDisplay();
     }
 
+    function setupScoreButton() {
+        scoreButton.addEventListener("click", function () {
+            localStorage.saveGame = JSON.stringify({
+                easy: 0,
+                hard: 0,
+                date: null,
+                hardClicks: 0
+            });
+            checkStorage();
+        });
+    }
+
     function updateScoreDisplay() {
         scoreEasyDisplay.textContent = "Easy " + saveGame.easy;
-        var c = saveGame.hardClicks  / saveGame.hard;
+        var c = saveGame.hardClicks / saveGame.hard;
         scoreHardDisplay.textContent = "Hard " + saveGame.hard + " (avg clicks: " + c.toFixed(2) + ")";
         var s = saveGame.date.toDateString() + " " + saveGame.date.toLocaleTimeString();
         savedDateDisplay.textContent = "Last Saved " + s;
     }
+
+
 });
